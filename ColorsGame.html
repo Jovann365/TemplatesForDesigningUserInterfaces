@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            border: 1px solid black;
+            margin: 3px;
+            background: gray;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="blue" class="square"></div>
+    <div id="green" class="square"></div>
+    <div id="purple" class="square"></div>
+    <div id="red" class="square"></div>
+    <div id="yellow" class="square"></div>
+</div>
+<br>
+<p>Input the colors of the squares in the correct order:</p>
+<input id="input1" type="text" style="width: 450px">
+<button id="enter" type="button" onclick="checkColors()">Enter</button>
+<script>
+    function checkColors(){
+        element = document.getElementById("input1")
+        value = element.value
+        console.log(value)
+        colors = value.split(" ")
+        console.log(colors)
+        element.value = ""
+        if (colors[0] === "blue" && colors[1] === "green" &&
+            colors[2] === "purple" && colors[3] === "red" && colors[4] === "yellow"){
+            setTimeout(showColors, 1000)
+            alert("Congratulations!")
+        }else{
+            setTimeout(showColors, 1000)
+            setTimeout(hideColors, 3000)
+        }
+
+    }
+    function showColors(){
+        var blue = document.getElementById("blue")
+        var green = document.getElementById("green")
+        var purple = document.getElementById("purple")
+        var red = document.getElementById("red")
+        var yellow = document.getElementById("yellow")
+        blue.style.background = "blue"
+        green.style.background = "green"
+        purple.style.background = "purple"
+        red.style.background = "red"
+        yellow.style.background = "yellow"
+
+    }
+    function hideColors(){
+        var blue = document.getElementById("blue")
+        var green = document.getElementById("green")
+        var purple = document.getElementById("purple")
+        var red = document.getElementById("red")
+        var yellow = document.getElementById("yellow")
+        blue.style.background = "gray"
+        green.style.background = "gray"
+        purple.style.background = "gray"
+        red.style.background = "gray"
+        yellow.style.background = "gray"
+    }
+</script>
+</body>
+</html>
