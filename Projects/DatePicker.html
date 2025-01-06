@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DatePicker</title>
+    <script src="../jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../jquery/jquery-ui.css">
+    <script src="../jquery/jquery-ui.js"></script>
+</head>
+<body>
+    <input id="datepicker">
+
+<script>
+    $(document).ready(function () {
+        $("#datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            firstDay: 1,
+            dayNames: ["Понеделник", "Вторник", "Среда", "Четврток", "Петок", "Сабота", "Недела"],
+            dateFormat: "dd/mm/yy",
+            monthNamesShort: ["Јан", "Фев", "Мар", "Апр" , "Мај", "Јун", "Јул", "Авг" ,"Сеп", "Окт", "Ное", "Дек"],
+            maxDate: "31/12/2050",
+            showAnim: "slide",
+            showButtonPanel: true,
+            showWeek: true,
+            // beforeShowDay: function (date) {
+            //     console.log(date.getDate())
+            //     return parseInt(date.getDate()) % 2 === 1;
+            // }
+        })
+        $("#datepicker").datepicker("setDate", "10/12/2012")
+    })
+</script>
+</body>
+</html>

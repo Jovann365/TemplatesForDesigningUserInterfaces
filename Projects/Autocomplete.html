@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Autocomplete</title>
+    <script src="../jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../jquery/jquery-ui.css">
+    <script src="../jquery/jquery-ui.js"></script>
+</head>
+<body>
+    <div class="ui-widget">
+        <label for="tags">Tags: </label>
+        <input id="tags">
+    </div>
+
+<script>
+    $(document).ready(function () {
+        var availableTags = ["Skopje", "Bitola", "Prilep", "Ohrid", "Struga", "Strumica", "Dojran", "Kichevo", "Kumanovo", "Tetovo"]
+        $("#tags").autocomplete({
+            source: availableTags,
+            minLength: 3
+        })
+    })
+</script>
+</body>
+</html>
