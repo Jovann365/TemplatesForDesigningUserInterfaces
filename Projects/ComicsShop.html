@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ComicsShop</title>
+    <script src="../jquery/jquery.js"></script>
+    <link rel="stylesheet" href="../jquery/jquery-ui.css">
+    <script src="../jquery/jquery-ui.js"></script>
+    <style>
+        #lists {
+            display: flex;
+        }
+        #dates {
+            list-style-type: none;
+            width: 300px;
+            margin-right: 20px;
+        }
+        #dates li:nth-child(even) {
+            background: whitesmoke;
+        }
+        #dates li:nth-child(odd) {
+            background: antiquewhite;
+        }
+        #comics {
+            list-style-type: none;
+        }
+        #comics li {
+            width: 500px;
+            padding: 5px;
+            margin-bottom: 1px;
+        }
+        #comics li:nth-child(odd) {
+            background: antiquewhite;
+        }
+        #comics li:nth-child(even) {
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <div id="lists">
+        <ul id="dates">
+            <li>2016-01-20</li>
+            <li>2016-02-03</li>
+            <li>2016-02-10</li>
+            <li>2016-02-17</li>
+        </ul>
+        <ul id="comics">
+
+        </ul>
+    </div>
+
+    <footer>
+        <img src="Images/reddit.png" height="48" width="48"/>
+        <img src="Images/linkedin.png" height="48" width="48"/>
+        <img src="Images/flickr.png" height="48" width="48"/>
+        <img src="Images/facebook.png" height="48" width="48"/>
+        <img src="Images/digg.png" height="48" width="48"/>
+        <img src="Images/delicious.png" height="48" width="48"/>
+    </footer>
+
+    <script>
+    $(document).ready(function () {
+        function getComics(date) {
+            $("#comics").html("");
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://api.shortboxed.com/comics/v1/release_date/" + date + "",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data.comics, function (i, item) {
+                       let newLi = document.createElement("li");
+                       let divOpen = document.createElement("div");
+                       let divClosed = document.createElement("div");
+                       divClosed.className = "closed";
+
+                       divOpen.innerHTML = "<p>Title: "+item.title+"</p><p>Price: "+item.price+"</p>";
+                       divClosed.innerHTML = "<p>Description: "+item.description+"</p><p>Creators: "+item.creators+"</p>";
+
+                        newLi.appendChild(divOpen);
+                        newLi.appendChild(divClosed);
+                        $("#comics").append(newLi);
+                    })
+                    $(".closed").hide();
+                }
+            })
+        }
+
+        $("#dates li").click(function () {
+            getComics($(this).html());
+        })
+
+        $("#comics").on("click", "li", function () {
+            $(this).find(".closed").slideToggle();
+        })
+    })
+
+</script>
+</body>
+</html>
