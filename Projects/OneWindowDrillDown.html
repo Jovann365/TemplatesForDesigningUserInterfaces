@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drill down - Drivers</title>
+  <script src="../jquery/jquery.js"></script>
+  <link rel="stylesheet" href="../jquery/jquery-ui.css">
+  <script src="../jquery/jquery-ui.js"></script>
+  <style>
+    #drivers {
+      list-style-type: none;
+    }
+    li, #details {
+      border: 1px solid black;
+      background: #fbd850;
+      width: 300px;
+    }
+
+  </style>
+</head>
+<body>
+  <ul id="drivers">
+
+  </ul>
+  <button id="load">Load More</button>
+
+  <div id="details">
+    <p id="name"></p>
+    <p id="dof"></p>
+    <p id="nationality"></p>
+    <p id="number"></p>
+    <a id="url">Link</a>
+    <button id="back">Back</button>
+  </div>
+<script>
+  $(document).ready(function () {
+    var startIndex = 0;
+    var limit = 3;
+    var flag = 0;
+    var position = 0;
+    $("#details").hide();
+
+    function getData() {
+      if (!flag) {
+        $.ajax({
+          url: "http://ergast.com/api/f1/2020/drivers.json?offset="+startIndex+"&limit="+limit+"",
+          dataType: "json",
+          success: function (data) {
+            startIndex += limit;
+            console.log(data)
+            $.each(data.MRData.DriverTable.Drivers, function (i, item) {
+              let newLi = document.createElement("li");
+              let openDiv = document.createElement("div");
+              openDiv.innerHTML = "<p>"+item.givenName+" "+item.familyName+"</p>";
+              newLi.appendChild(openDiv);
+              newLi.setAttribute("dof", item.dateOfBirth);
+              newLi.setAttribute("nationality", item.nationality);
+              newLi.setAttribute("number", item.permanentNumber);
+              newLi.setAttribute("url", item.url);
+              $("#drivers").append(newLi);
+            })
+            $(".closed").hide()
+            flag = 0;
+          }
+        })
+      }
+    }
+
+    $("#load").click(function () {
+      if (position === 0) {
+        if (($(window).scrollTop() + $(window).height()) >= $(document).height() - 100) {
+          getData();
+          flag = 1;
+        }
+      }
+    })
+
+    // When the content shown is bigger. I will use a button because I am only displaying the name.
+    // $(window).scroll(function () {
+    //   if (position === 0) {
+    //     if (($(window).scrollTop() + $(window).height()) >= $(document).height() - 100) {
+    //       getData();
+    //       flag = 1;
+    //     }
+    //   }
+    // })
+
+    $(document).on("click", "li", function () {
+        $("#drivers").hide();
+        $("#load").hide()
+        $("#name").html($(this).find("p").html());
+        $("#dof").html($(this).attr("dof"))
+        $("#nationality").html($(this).attr("nationality"))
+        $("#number").html($(this).attr("number"))
+        $("#url").attr("href", $(this).attr("url"))
+        position = 1;
+        $("#details").show()
+    })
+    
+    $("#back").click(function () {
+        $("#details").hide();
+        position = 0;
+        $("#drivers").show();
+        $("#load").show();
+    })
+
+
+    getData();
+  })
+</script>
+</body>
+</html>
