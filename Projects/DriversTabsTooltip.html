@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DriversTabsTooltip</title>
+  <script src="../jquery/jquery.js"></script>
+  <link rel="stylesheet" href="../jquery/jquery-ui.css">
+  <script src="../jquery/jquery-ui.js"></script>
+  <style>
+    ul {
+      list-style-type: none;
+    }
+    #2020, #2021, #2022, #favorites {
+      width: 300px;
+      margin-right: 30px;
+    }
+
+    #l2020, #l2021, #l2022, #fav {
+      width: 300px;
+      margin-right: 30px;
+    }
+    p {
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="tabs">
+  <ul>
+    <li><a href="#2020">2020</a></li>
+    <li><a href="#2021">2021</a></li>
+    <li><a href="#2022">2022</a></li>
+  </ul>
+
+  <div id="2020" style="width: 300px; display: inline-block; min-height: 400px;">
+    <p>Drivers from 2020</p>
+    <ul id="l2020"></ul>
+  </div>
+
+  <div id="2021" style="width: 300px; display: inline-block; min-height: 400px;">
+    <p>Drivers from 2021</p>
+    <ul id="l2021"></ul>
+  </div>
+
+  <div id="2022" style="width: 300px; display: inline-block; min-height: 400px;">
+    <p>Drivers from 2022</p>
+    <ul id="l2022"></ul>
+  </div>
+
+  <div id="favorites" style="width: 300px; display: inline-block; vertical-align: top; min-height: 400px;">
+      <ul id="fav">
+        <li>Favorites</li>
+      </ul>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#tabs").tabs();
+
+    function getData(year) {
+      $.ajax({
+        url: "http://ergast.com/api/f1/"+year+"/drivers.json",
+        dataType: "jsonp",
+        success: function (data) {
+          $.each(data.MRData.DriverTable.Drivers, function (i, item) {
+            let li = document.createElement("li");
+            li.setAttribute("nationality", item.nationality);
+            li.innerHTML = item.givenName + " " + item.familyName;
+            $("#" + year).append(li);
+          })
+        }
+      })
+    }
+
+    getData(2020);
+    getData(2021);
+    getData(2022);
+
+    $("#2020").sortable({
+      connectWith: "#fav"
+    })
+    $("#2021").sortable({
+      connectWith: "#fav"
+    })
+    $("#2022").sortable({
+      connectWith: "#fav"
+    })
+    $("#fav").sortable({
+      connectWith: "#2020, #2021, #2022"
+    })
+
+    $(document).tooltip({
+      items: "li",
+      content: function () {
+        return $(this).attr("nationality");
+      }
+    })
+  })
+</script>
+</body>
+</html>
